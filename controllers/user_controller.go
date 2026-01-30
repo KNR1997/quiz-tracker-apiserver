@@ -5,11 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/knr1997/quiz-tracker-apiserver/database"
-	"github.com/knr1997/quiz-tracker-apiserver/models"
+	"github.com/knr1997/quiz-tracker-apiserver/model"
 )
 
 func CreateUser(c *gin.Context) {
-	var user models.User
+	var user model.User
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -25,7 +25,7 @@ func CreateUser(c *gin.Context) {
 }
 
 func GetUsers(c *gin.Context) {
-	var users []models.User
+	var users []model.User
 	database.DB.Find(&users)
 	c.JSON(http.StatusOK, users)
 }
