@@ -16,23 +16,23 @@ func (userService *UserService) GetUserInfoList(info systemReq.GetUserList) (lis
 	db := database.DB.Model(&system.SysUser{})
 	var userList []system.SysUser
 
-	if info.NickName != "" {
-		db = db.Where("nick_name LIKE ?", "%"+info.NickName+"%")
-	}
-	if info.Phone != "" {
-		db = db.Where("phone LIKE ?", "%"+info.Phone+"%")
-	}
-	if info.Username != "" {
-		db = db.Where("username LIKE ?", "%"+info.Username+"%")
-	}
-	if info.Email != "" {
-		db = db.Where("email LIKE ?", "%"+info.Email+"%")
-	}
+	// if info.NickName != "" {
+	// 	db = db.Where("nick_name LIKE ?", "%"+info.NickName+"%")
+	// }
+	// if info.Phone != "" {
+	// 	db = db.Where("phone LIKE ?", "%"+info.Phone+"%")
+	// }
+	// if info.Username != "" {
+	// 	db = db.Where("username LIKE ?", "%"+info.Username+"%")
+	// }
+	// if info.Email != "" {
+	// 	db = db.Where("email LIKE ?", "%"+info.Email+"%")
+	// }
 
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
-	err = db.Limit(limit).Offset(offset).Preload("Authorities").Preload("Authority").Find(&userList).Error
+	err = db.Limit(limit).Offset(offset).Find(&userList).Error
 	return userList, total, err
 }

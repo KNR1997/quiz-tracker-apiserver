@@ -6,8 +6,8 @@ import (
 
 type GetUserList struct {
 	common.PageInfo
-	Username string `json:"username" form:"username"`
-	NickName string `json:"nickName" form:"nickName"`
-	Phone    string `json:"phone" form:"phone"`
-	Email    string `json:"email" form:"email"`
+	// Username string `json:"username" form:"username"`
+	// NickName string `json:"nickName" form:"nickName"`
+	// Phone    string `json:"phone" form:"phone"`
+	// Email    string `json:"email" form:"email"`
 }

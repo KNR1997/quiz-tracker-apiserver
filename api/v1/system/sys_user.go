@@ -2,9 +2,11 @@ package system
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/knr1997/quiz-tracker-apiserver/global"
 	"github.com/knr1997/quiz-tracker-apiserver/model/common/response"
 	systemReq "github.com/knr1997/quiz-tracker-apiserver/model/system/request"
 	"github.com/knr1997/quiz-tracker-apiserver/utils"
+	"go.uber.org/zap"
 )
 
 type BaseApi struct{}
@@ -23,8 +25,8 @@ func (b *BaseApi) GetUserList(c *gin.Context) {
 	}
 	list, total, err := userService.GetUserInfoList(pageInfo)
 	if err != nil {
-		// global.GVA_LOG.Error("获取失败!", zap.Error(err))
-		response.FailWithMessage("获取失败", c)
+		global.GVA_LOG.Error("Failed to retrieve.!", zap.Error(err))
+		response.FailWithMessage("Failed to retrieve", c)
 		return
 	}
 	response.OkWithDetailed(response.PageResult{
@@ -32,5 +34,5 @@ func (b *BaseApi) GetUserList(c *gin.Context) {
 		Total:    total,
 		Page:     pageInfo.Page,
 		PageSize: pageInfo.PageSize,
-	}, "获取成功", c)
+	}, "Successfully obtained", c)
 }
