@@ -32,13 +32,13 @@ func (e *CustomerApi) CreateExaCustomer(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	// customer.SysUserID = utils.GetUserID(c)
-	// customer.SysUserAuthorityID = utils.GetUserAuthorityId(c)
+	customer.SysUserID = 1
+	customer.SysUserAuthorityID = 1
 	err = customerService.CreateExaCustomer(customer)
 	if err != nil {
-		global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
+		global.GVA_LOG.Error("Creation failed!", zap.Error(err))
+		response.FailWithMessage("Failed to create.", c)
 		return
 	}
-	response.OkWithMessage("创建成功", c)
+	response.OkWithMessage("Created successfully.", c)
 }

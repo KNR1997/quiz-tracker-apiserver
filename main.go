@@ -2,7 +2,9 @@ package main
 
 import (
 	"log"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/knr1997/quiz-tracker-apiserver/core"
 	"github.com/knr1997/quiz-tracker-apiserver/database"
@@ -22,6 +24,7 @@ func main() {
 
 		system.SysUser{},
 		example.ExaCustomer{},
+		system.SysCourse{},
 		// system.SysBaseMenu{},
 		// system.SysAuthority{},
 		// system.SysBaseMenuBtn{},
@@ -35,6 +38,19 @@ func main() {
 
 	// Gin setup
 	r := gin.Default()
+
+	// ✅ CORS CONFIG
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"http://localhost:3000",
+			"http://localhost:5173",
+		},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Routes
 	routes.RegisterRoutes(r)
