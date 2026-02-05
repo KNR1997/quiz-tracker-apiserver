@@ -7,6 +7,7 @@ import (
 	"github.com/knr1997/quiz-tracker-apiserver/model/common/response"
 	"github.com/knr1997/quiz-tracker-apiserver/model/system"
 	sysRes "github.com/knr1997/quiz-tracker-apiserver/model/system/response"
+	"github.com/knr1997/quiz-tracker-apiserver/utils"
 	"go.uber.org/zap"
 )
 
@@ -34,23 +35,31 @@ func (e *CourseApi) CreateCourse(c *gin.Context) {
 }
 
 func (e *CourseApi) UpdateCourse(c *gin.Context) {
-	var course system.SysCourse
-	err := c.ShouldBindJSON(&course)
-	if err != nil {
+	var input system.SysCourse
+
+	// Get ID from URL
+	id := c.Param("id")
+	if id == "" {
+		response.FailWithMessage("Course ID is required", c)
+		return
+	}
+
+	// Bind request body
+	if err := c.ShouldBindJSON(&input); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	// err = utils.Verify(customer.GVA_MODEL, utils.IdVerify)
-	// if err != nil {
-	// 	response.FailWithMessage(err.Error(), c)
-	// 	return
-	// }
-	err = courseService.UpdateCourse(&course)
-	if err != nil {
+
+	// Assign ID manually
+	input.ID = utils.StrToUint(id) // or uint conversion
+
+	// Update
+	if err := courseService.UpdateCourse(&input); err != nil {
 		global.GVA_LOG.Error("Update failed!", zap.Error(err))
 		response.FailWithMessage("Failed to update.", c)
 		return
 	}
+
 	response.OkWithMessage("Updated successfully.", c)
 }
 

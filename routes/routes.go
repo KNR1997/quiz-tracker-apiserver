@@ -13,8 +13,8 @@ func RegisterRoutes(r *gin.Engine) {
 		api.POST("/getUserList", baseApi.GetUserList)
 		api.POST("/customers", exaCustomerApi.CreateExaCustomer)
 
-		api.PUT("/courses", courseApi.UpdateCourse)
-		// api.GET("/courses", courseApi.GetCourse)
+		api.POST("/courses", courseApi.CreateCourse)
+		api.PUT("/courses/:id", courseApi.UpdateCourse)
 		api.GET("/courses", courseApi.GetCourserList)
 		api.DELETE("/courses", courseApi.DeleteCourse)
 	}

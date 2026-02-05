@@ -212,3 +212,8 @@ func NotEmpty() string {
 func Ge(mark string) string {
 	return "ge=" + mark
 }
+
+func StrToUint(s string) uint {
+	id, _ := strconv.ParseUint(s, 10, 64)
+	return uint(id)
+}
