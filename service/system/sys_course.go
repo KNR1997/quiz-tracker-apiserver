@@ -39,7 +39,6 @@ func (courseService *CourseService) GetCourseInfoList(info request.PageInfo) (li
 	return courseList, total, err
 }
 
-func (courseService *CourseService) DeleteCourse(e system.SysCourse) (err error) {
-	err = database.DB.Delete(&e).Error
-	return err
+func (courseService *CourseService) DeleteCourse(id uint) error {
+	return database.DB.Delete(&system.SysCourse{}, id).Error
 }

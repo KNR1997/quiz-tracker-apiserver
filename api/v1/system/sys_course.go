@@ -1,6 +1,8 @@
 package system
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/knr1997/quiz-tracker-apiserver/global"
 	"github.com/knr1997/quiz-tracker-apiserver/model/common/request"
@@ -111,22 +113,23 @@ func (e *CourseApi) GetCourserList(c *gin.Context) {
 }
 
 func (e *CourseApi) DeleteCourse(c *gin.Context) {
-	var course system.SysCourse
-	err := c.ShouldBindJSON(&course)
-	if err != nil {
-		response.FailWithMessage(err.Error(), c)
+	id := c.Param("id")
+	if id == "" {
+		response.FailWithMessage("Course ID is required", c)
 		return
 	}
-	// err = utils.Verify(course.GVA_MODEL, utils.IdVerify)
-	// if err != nil {
-	// 	response.FailWithMessage(err.Error(), c)
-	// 	return
-	// }
-	err = courseService.DeleteCourse(course)
+
+	courseID, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
-		global.GVA_LOG.Error("Failed to delete!", zap.Error(err))
+		response.FailWithMessage("Invalid course ID", c)
+		return
+	}
+
+	if err := courseService.DeleteCourse(uint(courseID)); err != nil {
+		global.GVA_LOG.Error("Delete failed!", zap.Error(err))
 		response.FailWithMessage("Failed to delete.", c)
 		return
 	}
+
 	response.OkWithMessage("Deleted successfully.", c)
 }
