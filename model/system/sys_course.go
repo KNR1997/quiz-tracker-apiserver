@@ -6,4 +6,5 @@ type SysCourse struct {
 	global.GVA_MODEL
 	Name string `json:"name" form:"name" gorm:"comment:Course Name"`
 	Slug string `json:"slug" form:"slug" gorm:"comment:Course Slug"`
+	Code string `json:"code" form:"code" gorm:"comment:Course Code"`
 }

@@ -15,7 +15,13 @@ func RegisterRoutes(r *gin.Engine) {
 
 		api.POST("/courses", courseApi.CreateCourse)
 		api.PUT("/courses/:id", courseApi.UpdateCourse)
-		api.GET("/courses", courseApi.GetCourserList)
+		api.GET("/courses", courseApi.GetCourseList)
 		api.DELETE("/courses/:id", courseApi.DeleteCourse)
+
+		api.GET("/quizzes", quizApi.GetQuizList)
+		api.POST("/quizzes", quizApi.CreateQuiz)
+		api.PUT("/quizzes/:id", quizApi.UpdateQuiz)
+		api.DELETE("/quizzes/:id", quizApi.DeleteQuiz)
+
 	}
 }

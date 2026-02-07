@@ -8,16 +8,15 @@ import (
 	"github.com/knr1997/quiz-tracker-apiserver/model/common/request"
 	"github.com/knr1997/quiz-tracker-apiserver/model/common/response"
 	"github.com/knr1997/quiz-tracker-apiserver/model/system"
-	sysRes "github.com/knr1997/quiz-tracker-apiserver/model/system/response"
 	"github.com/knr1997/quiz-tracker-apiserver/utils"
 	"go.uber.org/zap"
 )
 
-type CourseApi struct{}
+type QuizApi struct{}
 
-func (e *CourseApi) CreateCourse(c *gin.Context) {
-	var course system.SysCourse
-	err := c.ShouldBindJSON(&course)
+func (e *QuizApi) CreateQuiz(c *gin.Context) {
+	var quiz system.SysQuiz
+	err := c.ShouldBindJSON(&quiz)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -27,7 +26,7 @@ func (e *CourseApi) CreateCourse(c *gin.Context) {
 	// 	response.FailWithMessage(err.Error(), c)
 	// 	return
 	// }
-	err = courseService.CreateCourse(course)
+	err = quizService.CreateQuiz(quiz)
 	if err != nil {
 		global.GVA_LOG.Error("Creation failed!", zap.Error(err))
 		response.FailWithMessage("Failed to create.", c)
@@ -36,13 +35,13 @@ func (e *CourseApi) CreateCourse(c *gin.Context) {
 	response.OkWithMessage("Created successfully.", c)
 }
 
-func (e *CourseApi) UpdateCourse(c *gin.Context) {
-	var input system.SysCourse
+func (e *QuizApi) UpdateQuiz(c *gin.Context) {
+	var input system.SysQuiz
 
 	// Get ID from URL
 	id := c.Param("id")
 	if id == "" {
-		response.FailWithMessage("Course ID is required", c)
+		response.FailWithMessage("Quiz ID is required", c)
 		return
 	}
 
@@ -56,7 +55,7 @@ func (e *CourseApi) UpdateCourse(c *gin.Context) {
 	input.ID = utils.StrToUint(id) // or uint conversion
 
 	// Update
-	if err := courseService.UpdateCourse(&input); err != nil {
+	if err := quizService.UpdateQuiz(&input); err != nil {
 		global.GVA_LOG.Error("Update failed!", zap.Error(err))
 		response.FailWithMessage("Failed to update.", c)
 		return
@@ -65,28 +64,7 @@ func (e *CourseApi) UpdateCourse(c *gin.Context) {
 	response.OkWithMessage("Updated successfully.", c)
 }
 
-func (e *CourseApi) GetCourse(c *gin.Context) {
-	var course system.SysCourse
-	err := c.ShouldBindQuery(&course)
-	if err != nil {
-		response.FailWithMessage(err.Error(), c)
-		return
-	}
-	// err = utils.Verify(customer.GVA_MODEL, utils.IdVerify)
-	// if err != nil {
-	// 	response.FailWithMessage(err.Error(), c)
-	// 	return
-	// }
-	data, err := courseService.GetCourse(course.ID)
-	if err != nil {
-		global.GVA_LOG.Error("Failed to retrieve!", zap.Error(err))
-		response.FailWithMessage("Failed to retrieve.", c)
-		return
-	}
-	response.OkWithDetailed(sysRes.CourseResponse{Course: data}, "Retrieved successfully.", c)
-}
-
-func (e *CourseApi) GetCourseList(c *gin.Context) {
+func (e *QuizApi) GetQuizList(c *gin.Context) {
 	var pageInfo request.PageInfo
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
@@ -98,24 +76,24 @@ func (e *CourseApi) GetCourseList(c *gin.Context) {
 	// 	response.FailWithMessage(err.Error(), c)
 	// 	return
 	// }
-	customerList, total, err := courseService.GetCourseInfoList(pageInfo)
+	quizList, total, err := quizService.GetQuizInfoList(pageInfo)
 	if err != nil {
 		global.GVA_LOG.Error("Failed to retrieve!", zap.Error(err))
 		response.FailWithMessage("Failed to retrieve."+err.Error(), c)
 		return
 	}
 	response.OkWithDetailed(response.PageResult{
-		List:     customerList,
+		List:     quizList,
 		Total:    total,
 		Page:     pageInfo.Page,
 		PageSize: pageInfo.PageSize,
 	}, "Retrieved successfully.", c)
 }
 
-func (e *CourseApi) DeleteCourse(c *gin.Context) {
+func (e *QuizApi) DeleteQuiz(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
-		response.FailWithMessage("Course ID is required", c)
+		response.FailWithMessage("Quiz ID is required", c)
 		return
 	}
 
@@ -125,7 +103,7 @@ func (e *CourseApi) DeleteCourse(c *gin.Context) {
 		return
 	}
 
-	if err := courseService.DeleteCourse(uint(courseID)); err != nil {
+	if err := quizService.DeleteQuiz(uint(courseID)); err != nil {
 		global.GVA_LOG.Error("Delete failed!", zap.Error(err))
 		response.FailWithMessage("Failed to delete.", c)
 		return

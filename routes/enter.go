@@ -9,4 +9,5 @@ var (
 	exaCustomerApi = api.ApiGroupApp.ExampleApiGroup.CustomerApi
 	baseApi        = api.ApiGroupApp.SystemApiGroup.BaseApi
 	courseApi      = api.ApiGroupApp.SystemApiGroup.CourseApi
+	quizApi        = api.ApiGroupApp.SystemApiGroup.QuizApi
 )

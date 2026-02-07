@@ -25,6 +25,7 @@ func main() {
 		system.SysUser{},
 		example.ExaCustomer{},
 		system.SysCourse{},
+		system.SysQuiz{},
 		// system.SysBaseMenu{},
 		// system.SysAuthority{},
 		// system.SysBaseMenuBtn{},
